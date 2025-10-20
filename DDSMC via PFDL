@@ -63,10 +63,6 @@ for k=6:N
    else
         fai(k,1:nu)=fai(k-1,1:nu)+eita*(y(k)+z(k)-y(k-1)-z(k-1)-(lamda+fai(k-1,1:nu))*du(k-1,1:nu)')*du(k-1,1:nu)/(miu+du(k-1,1:nu)*du(k-1,1:nu)');
    end
-
-%     if fai(k,1)<0.00001
-%         fai(k,1)=0.5;
-%     end
     
     if (k>=60 && k<=90)||(k>=160 && k<=200)||(k>=300 && k<=315)||(k>=405 && k<=420)||(k>=570 && k<=600)||(k>=760 && k<=780)
        if nu==1
