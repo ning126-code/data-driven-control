@@ -21,7 +21,7 @@ gamma=0.6;
 zeta=0.001;
 kappa=0.001;
 
-%inital values
+%initial values
 y(1:6)=0;y(4)=1;
 u(1:5)=0;
 du(1:5,1:nu)=0;
