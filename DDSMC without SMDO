@@ -12,8 +12,7 @@ end
 nu=3;
 eita =0.5;
 miu =1;
-rou=0.5;
-lamda =0.01;
+lamda =1.05;
 
 htheta=0.8;
 tau=0.5;
@@ -46,10 +45,10 @@ for k=6:N
    
     p(k)=0.1*sin(k*pi/50);
   if (k>=60 && k<=90)||(k>=170 && k<=200)||(k>=300 && k<=315)||(k>=405 && k<=420)||(k>=570 && k<=600)||(k>=760 && k<=780)
-        hy2(k) = hy2(k-1)+(lamda+fai2(k-1,1:nu))*du2(k-1,1:nu)';
+        hy2(k) = hy2(k-1)+fai2(k-1,1:nu)*du2(k-1,1:nu)';
    else
 
-        hy2(k) = hy2(k-1)+(lamda+fai2(k-1,1:nu))*du2(k-1,1:nu)'-htheta*(hy2(k-1)-y2(k-1)-z(k-1));
+        hy2(k) = hy2(k-1)+fai2(k-1,1:nu)*du2(k-1,1:nu)'-htheta*(hy2(k-1)-y2(k-1)-z(k-1));
   end
 
     eo2(k)= hy2(k)-y2(k);
@@ -64,15 +63,15 @@ for k=6:N
     
   if (k>=60 && k<=90)||(k>=170 && k<=200)||(k>=300 && k<=315)||(k>=405 && k<=420)||(k>=570 && k<=600)||(k>=760 && k<=780)
       if nu==1
-         u2(k) = u2(k-1)+rou*fai2(k,1)*(yd(k+1)-(1+tau)*hy2(k)+tau*yd(k)-(1-gamma)*s2(k)+zeta*sign(s2(k)))/(lamda+fai2(k,1));        
+         u2(k) = u2(k-1)+fai2(k,1)*(yd(k+1)-(1+tau)*hy2(k)+tau*yd(k)-(1-gamma)*s2(k)+zeta*sign(s2(k)))/(lamda+fai2(k,1)^2);        
       else
-         u2(k) = u2(k-1)+rou*fai2(k,1)*(yd(k+1)-(1+tau)*hy2(k)+tau*yd(k)-(1-gamma)*s2(k)+zeta*sign(s2(k))-fai2(k,2:nu)*du2(k-1,1:nu-1)')/(lamda+fai2(k,1)); 
+         u2(k) = u2(k-1)+fai2(k,1)*(yd(k+1)-(1+tau)*hy2(k)+tau*yd(k)-(1-gamma)*s2(k)+zeta*sign(s2(k))-fai2(k,2:nu)*du2(k-1,1:nu-1)')/(lamda+fai2(k,1)^2); 
       end
   else
       if nu==1
-         u2(k) = u2(k-1)+rou*fai2(k,1)*(yd(k+1)-(1+tau-htheta)*hy2(k)+tau*yd(k)-htheta*y2(k)-p(k)-z(k)-(1-gamma)*s2(k)+zeta*sign(s2(k)))/(lamda+fai2(k,1));        
+         u2(k) = u2(k-1)+fai2(k,1)*(yd(k+1)-(1+tau-htheta)*hy2(k)+tau*yd(k)-htheta*y2(k)-p(k)-z(k)-(1-gamma)*s2(k)+zeta*sign(s2(k)))/(lamda+fai2(k,1)^2);        
       else
-         u2(k) = u2(k-1)+rou*fai2(k,1)*(yd(k+1)-(1+tau-htheta)*hy2(k)+tau*yd(k)-htheta*y2(k)-p(k)-z(k)-(1-gamma)*s2(k)+zeta*sign(s2(k))-fai2(k,2:nu)*du2(k-1,1:nu-1)')/(lamda+fai2(k,1)); 
+         u2(k) = u2(k-1)+fai2(k,1)*(yd(k+1)-(1+tau-htheta)*hy2(k)+tau*yd(k)-htheta*y2(k)-p(k)-z(k)-(1-gamma)*s2(k)+zeta*sign(s2(k))-fai2(k,2:nu)*du2(k-1,1:nu-1)')/(lamda+fai2(k,1)^2); 
       end
   end
 
