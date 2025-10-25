@@ -12,8 +12,7 @@ end
 nu=3;
 eita =0.5;
 miu =1;
-rou=0.5;
-lamda =0.01;
+lamda =1.05;
 
 htheta=0.8;
 tau=0.5;
@@ -48,9 +47,9 @@ for k=6:N
     p(k)=0.1*sin(k*pi/50);
 
   if (k>=60 && k<=90)||(k>=160 && k<=200)||(k>=300 && k<=315)||(k>=405 && k<=420)||(k>=570 && k<=600)||(k>=760 && k<=780)
-        hy(k) = hy(k-1)+(lamda+fai(k-1,1:nu))*du(k-1,1:nu)';
+        hy(k) = hy(k-1)+fai(k-1,1:nu)*du(k-1,1:nu)';
    else
-        hy(k) = hy(k-1)+(lamda+fai(k-1,1:nu))*du(k-1,1:nu)'-htheta*(hy(k-1)-y(k-1)-z(k-1));
+        hy(k) = hy(k-1)+fai(k-1,1:nu)*du(k-1,1:nu)'-htheta*(hy(k-1)-y(k-1)-z(k-1));
   end
   
     eo(k)=hy(k)-y(k);
@@ -61,20 +60,20 @@ for k=6:N
    if (k>=60 && k<=90)||(k>=160 && k<=200)||(k>=300 && k<=315)||(k>=405 && k<=420)||(k>=570 && k<=600)||(k>=760 && k<=780)
         fai(k,1:nu)=fai(k-1,1:nu);
    else
-        fai(k,1:nu)=fai(k-1,1:nu)+eita*(y(k)+z(k)-y(k-1)-z(k-1)-(lamda+fai(k-1,1:nu))*du(k-1,1:nu)')*du(k-1,1:nu)/(miu+du(k-1,1:nu)*du(k-1,1:nu)');
+        fai(k,1:nu)=fai(k-1,1:nu)+eita*(y(k)+z(k)-y(k-1)-z(k-1)-fai(k-1,1:nu)*du(k-1,1:nu)')*du(k-1,1:nu)/(miu+du(k-1,1:nu)*du(k-1,1:nu)');
    end
     
     if (k>=60 && k<=90)||(k>=160 && k<=200)||(k>=300 && k<=315)||(k>=405 && k<=420)||(k>=570 && k<=600)||(k>=760 && k<=780)
        if nu==1
-          u(k) = u(k-1)+rou*fai(k,1)*(yd(k+1)-(1+tau)*hy(k)+tau*yd(k)-hp(k)-(1-gamma)*s(k)+zeta*sign(s(k)))/(lamda+fai(k,1));        
+          u(k) = u(k-1)+fai(k,1)*(yd(k+1)-(1+tau)*hy(k)+tau*yd(k)-hp(k)-(1-gamma)*s(k)+zeta*sign(s(k)))/(lamda+fai(k,1)^2);        
        else
-          u(k) = u(k-1)+rou*fai(k,1)*(yd(k+1)-(1+tau)*hy(k)+tau*yd(k)-hp(k)-(1-gamma)*s(k)+zeta*sign(s(k))-fai(k,2:nu)*du(k-1,1:nu-1)')/(lamda+fai(k,1)); 
+          u(k) = u(k-1)+fai(k,1)*(yd(k+1)-(1+tau)*hy(k)+tau*yd(k)-hp(k)-(1-gamma)*s(k)+zeta*sign(s(k))-fai(k,2:nu)*du(k-1,1:nu-1)')/(lamda+fai(k,1)^2); 
        end
     else
        if nu==1
-          u(k) = u(k-1)+rou*fai(k,1)*(yd(k+1)-(1+tau-htheta)*hy(k)+tau*yd(k)-htheta*y(k)-hp(k)-htheta*z(k)-(1-gamma)*s(k)+zeta*sign(s(k)))/(lamda+fai(k,1));        
+          u(k) = u(k-1)+fai(k,1)*(yd(k+1)-(1+tau-htheta)*hy(k)+tau*yd(k)-htheta*y(k)-hp(k)-htheta*z(k)-(1-gamma)*s(k)+zeta*sign(s(k)))/(lamda+fai(k,1)^2);        
        else
-          u(k) = u(k-1)+rou*fai(k,1)*(yd(k+1)-(1+tau-htheta)*hy(k)+tau*yd(k)-htheta*y(k)-hp(k)-htheta*z(k)-(1-gamma)*s(k)+zeta*sign(s(k))-fai(k,2:nu)*du(k-1,1:nu-1)')/(lamda+fai(k,1)); 
+          u(k) = u(k-1)+fai(k,1)*(yd(k+1)-(1+tau-htheta)*hy(k)+tau*yd(k)-htheta*y(k)-hp(k)-htheta*z(k)-(1-gamma)*s(k)+zeta*sign(s(k))-fai(k,2:nu)*du(k-1,1:nu-1)')/(lamda+fai(k,1)^2); 
        end
     end
   
